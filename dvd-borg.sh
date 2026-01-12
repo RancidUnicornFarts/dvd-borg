@@ -62,7 +62,7 @@ ripit () {
                         date >> ~/rip2_or_no_rip.txt
                         echo "BlurayImage : $FolderName, Title number $title_number / $no_of_titles of length $true_length_of_this_title." >> ~/rip2_or_no_rip.txt
                         filename=""
-                        filename="${base_filename}_T${title_number}_${VIDEO_ENC}_${SPEED}_${QUALITY}.mkv"
+                        filename="${base_filename}_T${title_number}_${VIDEO_ENC}_${SPEED}.mkv"
                         ## DEBUG warn $filename
                         if [ ! -e "$outputfolder/$filename" ]; then
 
@@ -77,15 +77,8 @@ ripit () {
 
                             START_TIME=`date`
                             
-#                            echo "$HANDBRAKE -i '$FolderName'  -m -T -t $title_number -e '$VIDEO_ENC' --encoder-preset $SPEED --align-av -q '$QUALITY' -a none -o '$outputfolder/$filename'" >>  ~/rip2_or_no_rip.txt
                             echo "$HANDBRAKE -i '$FolderName'  -m -T -t $title_number -e '$VIDEO_ENC' --encoder-preset $SPEED --align-av -q $QUALITY --aencoder copy --all-audio --audio-copy-mask "aac,ac3,eac3,truehd,dts,dtshd,mp3,flac" -o '$outputfolder/$filename'" >>  ~/rip2_or_no_rip.txt
-                            #$HANDBRAKE -i "$FolderName" -m -T -t $title_number -e $VIDEO_ENC --encoder-preset $SPEED  --align-av -q $QUALITY -a none --start-at duration:440 --stop-at duration:300  --cfr -o "$outputfolder/$filename"
-                            #$HANDBRAKE -i "$FolderName" -m -T -t $title_number -e $VIDEO_ENC --encoder-preset $SPEED  --align-av -q $QUALITY --aencoder copy --all-audio --audio-copy-mask "aac,ac3,eac3,truehd,dts,dtshd,mp3,flac" --cfr -o "$outputfolder/$filename"
-                            #$HANDBRAKE -i "$FolderName" -m -T -t $title_number -e $VIDEO_ENC --encoder-preset $SPEED  --align-av -q $QUALITY --aencoder copy --all-audio ---all-audio -E av_aac --mixdown stereo --cfr -o "$outputfolder/$filename"
-
-                            #$HANDBRAKE -i "$FolderName" -m -T -t $title_number -e $VIDEO_ENC --encoder-preset $SPEED  --align-av -q $QUALITY --aencoder copy --all-audio -E av_aac --mixdown stereo --cfr -o "$outputfolder/$filename"
                             $HANDBRAKE -i "$FolderName" -m -T -t $title_number -e $VIDEO_ENC --encoder-preset $SPEED --align-av -q $QUALITY --aencoder copy --all-audio --audio-copy-mask "aac,ac3,eac3,truehd,dts,dtshd,mp3,flac" -o "$outputfolder/$filename"
-
 
                             END_TIME=`date`
 
@@ -95,7 +88,7 @@ ripit () {
                             echo "$START_TIME, $END_TIME, $filename, $VIDEO_ENC, $QUALITY, $SPEED, $SIZE"
 
                             good "Done $filename, Sleeping now"
-                            sleep 20
+                            sleep 5
 
                         else
                             warn "Skipped '$outputfolder/$filename', Title number : $title_number/$no_of_titles, file exists"
@@ -112,6 +105,8 @@ ripit () {
 
                     if [ -e "$HOME/stop" ]; then
                         warn "stopped"
+                        rm -- "$HOME/stop" 2>/dev/null
+
                         exit
                     fi
 
@@ -167,10 +162,10 @@ ripit;
 # Set some predefined stuff
 HANDBRAKE=/Applications/HandBrakeCLI
 
-outputfolder="/Volumes/Media/DVD_Rip/Doctor Who/Doctor Who-DVD"
-inputfolder="/Volumes/Media/ISO Files/DVD Images/As Downloaded/01st Doctor DVDs (Stories 1 to 29) 1963-1966 from Doctor Who/"
+outputfolder="/Volumes/BGQ/Doctor Who"
+inputfolder="/Volumes/PlanetExp/DVD-Images/"
 
-no_encode_less_than=180
+no_encode_less_than=33
 
 
 #####################
@@ -179,23 +174,10 @@ no_encode_less_than=180
 
 SPEED=normal
 
-QUALITY="12"
 VIDEO_ENC=vt_h265_10bit
-ripit;
-
-VIDEO_ENC=vt_h264_10bit
-ripit;
-
-QUALITY="60"
-VIDEO_ENC=vt_h265_10bit
-ripit;
-
-VIDEO_ENC=vt_h264_10bit
 ripit;
 
 exit
-
-
 
 ############
 ## This is the usual
