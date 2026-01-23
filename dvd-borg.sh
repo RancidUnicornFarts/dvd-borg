@@ -162,10 +162,10 @@ ripit;
 # Set some predefined stuff
 HANDBRAKE=/Applications/HandBrakeCLI
 
-outputfolder="/Volumes/BGQ/Doctor Who"
+outputfolder="/Volumes/Video_Files/Doctor Who"
 inputfolder="/Volumes/PlanetExp/DVD-Images/"
 
-no_encode_less_than=33
+no_encode_less_than=63
 
 
 #####################

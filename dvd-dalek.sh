@@ -21,7 +21,7 @@ highlight () {
 
 
 HANDBRAKE=/Applications/HandBrakeCLI
-outputfolder="/Volumes/BGQ/Doctor Who"
+outputfolder="/Volumes/Video_Files/Doctor Who"
 inputfolder="/Volumes/PlanetExp/DVD-Images"
 
 VIDEO_ENC=vt_h265_10bit
@@ -30,6 +30,7 @@ no_encode_less_than=180
 
 STIK="TV Show"
 GENRE="Sci-Fi & Fantasy"
+ENCODE_TYPE="mkv"
 
 
 ripit () {
@@ -79,7 +80,9 @@ ripit () {
               echo "Disk Image : $FolderName *** SKIPPED *** file exists" >> ~/rip2_or_no_rip.txt
           fi
 
-        setinfo;
+          if [ $ENCODE_TYPE = "mp4" ]; then
+            setinfo;
+          fi
 
           echo ".........................................................................................." >> ~/rip2_or_no_rip.txt
           date  >> ~/rip2_or_no_rip.txt
